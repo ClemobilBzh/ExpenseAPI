@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ExpenseApi.Data;
 using ExpenseApi.Models;
+using ExpenseApi.Models.DTO;
+using AutoMapper;
 
 namespace ExpenseApi.Controllers
 {
@@ -15,26 +17,31 @@ namespace ExpenseApi.Controllers
     public class ExpensesController : ControllerBase
     {
         private readonly ExpenseContext _context;
+        private readonly IMapper _mapper;
 
-        public ExpensesController(ExpenseContext context)
+        public ExpensesController(ExpenseContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Expenses
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Expense>>> GetExpenses()
+        public async Task<ActionResult<IEnumerable<ExpenseDtoOut>>> GetExpenses()
         {
             if (_context.Expenses == null)
             {
                 return NotFound();
             }
-            return await _context.Expenses.ToListAsync();
+
+            var expenses = await _context.Expenses.ToListAsync();
+            var expensesDto = _mapper.Map<IEnumerable<ExpenseDtoOut>>(expenses);
+            return Ok(expensesDto);
         }
 
         // GET: api/Expenses/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Expense>> GetExpense(int id)
+        public async Task<ActionResult<ExpenseDtoOut>> GetExpense(int id)
         {
             if (_context.Expenses == null)
             {
@@ -47,19 +54,14 @@ namespace ExpenseApi.Controllers
                 return NotFound();
             }
 
-            return expense;
+            return _mapper.Map<ExpenseDtoOut>(expense);
         }
 
         // PUT: api/Expenses/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutExpense(int id, Expense expense)
+        public async Task<IActionResult> PutExpense(int id, ExpenseDtoIn expense)
         {
-            if (id != expense.Id)
-            {
-                return BadRequest();
-            }
-
             _context.Entry(expense).State = EntityState.Modified;
 
             try
@@ -84,16 +86,20 @@ namespace ExpenseApi.Controllers
         // POST: api/Expenses
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Expense>> PostExpense(Expense expense)
+        public async Task<ActionResult<Expense>> PostExpense(ExpenseDtoIn expenseDto)
         {
             if (_context.Expenses == null)
             {
                 return Problem("Entity set 'ExpenseContext.Expenses'  is null.");
             }
+            Expense expense = _mapper.Map<Expense>(expenseDto);
+            expense.User = _context.Users.Find(expenseDto.UserId);
+            expense.Amount.Currency = _context.Currencies.Find(expenseDto.Amount.CurrencyId);
+
             _context.Expenses.Add(expense);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetExpense), new { id = expense.Id }, expense);
+            return CreatedAtAction(nameof(GetExpense), new { id = expense.Id }, _mapper.Map<ExpenseDtoOut>(expense));
         }
 
         // DELETE: api/Expenses/5

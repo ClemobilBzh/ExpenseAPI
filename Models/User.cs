@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 
 namespace ExpenseApi.Models
 {
@@ -11,5 +12,16 @@ namespace ExpenseApi.Models
         public int CurrencyId { get; set; }
 
         public List<Expense> Expenses { get; set; }
+
+        public string GetName()
+        {
+            StringBuilder sb = new();
+
+            sb.Append(FirstName);
+            sb.Append(' ');
+            sb.Append(LastName);
+
+            return sb.ToString();
+        }
     }
 }

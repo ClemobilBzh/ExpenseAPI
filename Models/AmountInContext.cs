@@ -11,9 +11,9 @@ namespace ExpenseApi.Models
         public Expense Expense { get; set; }
         public int ExpenseId { get; set; }
 
-        public override string ToString()
+        public string GetAmoutInfo()
         {
-            return Currency.Symbol + Amount.ToString("D2");
+            return Currency.Symbol + Amount.ToString("f2");
         }
     }
 }
