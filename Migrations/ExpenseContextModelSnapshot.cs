@@ -46,7 +46,7 @@ namespace ExpenseApi.Migrations
                     b.HasIndex("ExpenseId")
                         .IsUnique();
 
-                    b.ToTable("Amounts");
+                    b.ToTable("Amounts", (string)null);
                 });
 
             modelBuilder.Entity("ExpenseApi.Models.Currency", b =>
@@ -67,7 +67,7 @@ namespace ExpenseApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Currencies");
+                    b.ToTable("Currencies", (string)null);
                 });
 
             modelBuilder.Entity("ExpenseApi.Models.Expense", b =>
@@ -95,7 +95,7 @@ namespace ExpenseApi.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Expenses");
+                    b.ToTable("Expenses", (string)null);
                 });
 
             modelBuilder.Entity("ExpenseApi.Models.User", b =>
@@ -121,7 +121,7 @@ namespace ExpenseApi.Migrations
 
                     b.HasIndex("CurrencyId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("ExpenseApi.Models.AmountInContext", b =>

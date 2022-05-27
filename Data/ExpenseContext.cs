@@ -8,8 +8,7 @@ namespace ExpenseApi.Data
         public DbSet<Expense> Expenses { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Currency> Currencies { get; set; }
-
-        public DbSet<AmountInContext> Amounts { get; set; }
+        public DbSet<AmountDetails> Amounts { get; set; }
 
         public ExpenseContext(DbContextOptions<ExpenseContext> options) : base(options)
         {
@@ -18,7 +17,7 @@ namespace ExpenseApi.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AmountInContext>()
+            modelBuilder.Entity<AmountDetails>()
                 .HasOne(a => a.Expense)
                 .WithOne(e => e.Amount)
                 .OnDelete(DeleteBehavior.NoAction)

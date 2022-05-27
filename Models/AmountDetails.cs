@@ -2,7 +2,7 @@ using System;
 
 namespace ExpenseApi.Models
 {
-    public class AmountInContext
+    public class AmountDetails
     {
         public int Id { get; set; }
         public float Amount { get; set; }

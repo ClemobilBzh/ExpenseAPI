@@ -7,13 +7,14 @@ namespace ExpenseApi.Models.DTO
     {
         public ExpenseProfile()
         {
-            CreateMap<Expense, ExpenseDtoOut>()
+            CreateMap<Expense, ExpenseDto>()
                 .ForMember(eo => eo.UserName, opt => opt.MapFrom(e => e.User.GetName()))
-                .ForMember(eo => eo.Amount, opt => opt.MapFrom(e => e.Amount.GetAmoutInfo()));
+                .ForMember(eo => eo.AmountDisplay, opt => opt.MapFrom(e => e.Amount.GetAmoutInfo()))
+                .ForMember(eo => eo.Amount, opt => opt.Ignore());
 
-            CreateMap<ExpenseDtoIn, Expense>();
+            CreateMap<ExpenseDto, Expense>();
 
-            CreateMap<AmountDtoIn, AmountInContext>();
+            CreateMap<AmountDtoIn, AmountDetails>();
             CreateMap<UserDto, User>();
         }
     }

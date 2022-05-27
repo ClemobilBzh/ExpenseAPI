@@ -1,14 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using ExpenseApi.Data;
 using ExpenseApi.Models;
 using ExpenseApi.Models.DTO;
 using AutoMapper;
+using ExpenseApi.Repositories;
 
 namespace ExpenseApi.Controllers
 {
@@ -16,68 +10,58 @@ namespace ExpenseApi.Controllers
     [ApiController]
     public class ExpensesController : ControllerBase
     {
-        private readonly ExpenseContext _context;
         private readonly IMapper _mapper;
+        private readonly IExpenseRepository _expenseRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly ICurrencyRepository _currencyRepository;
 
-        public ExpensesController(ExpenseContext context, IMapper mapper)
+        public ExpensesController(IMapper mapper, IExpenseRepository expenseRepository, IUserRepository userRepository, ICurrencyRepository currencyRepository)
         {
-            _context = context;
             _mapper = mapper;
+            _expenseRepository = expenseRepository;
+            _userRepository = userRepository;
+            _currencyRepository = currencyRepository;
         }
 
         // GET: api/Expenses
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ExpenseDtoOut>>> GetExpenses()
+        public async Task<ActionResult<IEnumerable<ExpenseDto>>> GetExpenses()
         {
-            if (_context.Expenses == null)
+            var expenses = await _expenseRepository.GetAll();
+            if (expenses == null || expenses.Count() == 0)
             {
                 return NotFound();
             }
 
-            var expenses = await _context.Expenses.ToListAsync();
-            var expensesDto = _mapper.Map<IEnumerable<ExpenseDtoOut>>(expenses);
+            var expensesDto = _mapper.Map<IEnumerable<ExpenseDto>>(expenses);
             return Ok(expensesDto);
         }
 
         // GET: api/Expenses/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ExpenseDtoOut>> GetExpense(int id)
+        public async Task<ActionResult<ExpenseDto>> GetExpense(int id)
         {
-            if (_context.Expenses == null)
-            {
-                return NotFound();
-            }
-            var expense = await _context.Expenses.FindAsync(id);
+            var expense = await _expenseRepository.GetById(id);
 
             if (expense == null)
             {
                 return NotFound();
             }
 
-            return _mapper.Map<ExpenseDtoOut>(expense);
+            return _mapper.Map<ExpenseDto>(expense);
         }
 
         // PUT: api/Expenses/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutExpense(int id, ExpenseDtoIn expense)
+        public async Task<IActionResult> PutExpense(int id, ExpenseDto expenseDto)
         {
-            _context.Entry(expense).State = EntityState.Modified;
+            Expense expense = _mapper.Map<Expense>(expenseDto);
+            int repoReturn = await _expenseRepository.Update(expense);
 
-            try
+            if (repoReturn == 0)
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ExpenseExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound();
             }
 
             return NoContent();
@@ -86,45 +70,31 @@ namespace ExpenseApi.Controllers
         // POST: api/Expenses
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Expense>> PostExpense(ExpenseDtoIn expenseDto)
+        public async Task<ActionResult<Expense>> PostExpense(ExpenseDto expenseDto)
         {
-            if (_context.Expenses == null)
-            {
-                return Problem("Entity set 'ExpenseContext.Expenses'  is null.");
-            }
             Expense expense = _mapper.Map<Expense>(expenseDto);
-            expense.User = _context.Users.Find(expenseDto.UserId);
-            expense.Amount.Currency = _context.Currencies.Find(expenseDto.Amount.CurrencyId);
+            expense.User = await _userRepository.GetById(expenseDto.UserId);
+            expense.Amount.Currency = await _currencyRepository.GetById(expenseDto.Amount.CurrencyId);
 
-            _context.Expenses.Add(expense);
-            await _context.SaveChangesAsync();
+            expense = await _expenseRepository.Add(expense);
 
-            return CreatedAtAction(nameof(GetExpense), new { id = expense.Id }, _mapper.Map<ExpenseDtoOut>(expense));
+            return CreatedAtAction(nameof(GetExpense), new { id = expense.Id }, _mapper.Map<ExpenseDto>(expense));
         }
 
         // DELETE: api/Expenses/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteExpense(int id)
         {
-            if (_context.Expenses == null)
-            {
-                return NotFound();
-            }
-            var expense = await _context.Expenses.FindAsync(id);
+            Expense expense = await _expenseRepository.GetById(id);
+
             if (expense == null)
             {
                 return NotFound();
             }
 
-            _context.Expenses.Remove(expense);
-            await _context.SaveChangesAsync();
+            _expenseRepository.Remove(expense);
 
             return NoContent();
-        }
-
-        private bool ExpenseExists(int id)
-        {
-            return (_context.Expenses?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
