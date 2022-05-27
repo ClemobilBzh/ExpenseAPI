@@ -16,8 +16,8 @@ namespace ExpenseApi.Data
 
             var currencies = new Currency[]
             {
-                new Currency {Name = "Dollar américain", Symbol = "$"},
-                new Currency {Name = "Rouble russe", Symbol = "₽"}
+                new Currency {Name = "American Dollar", Symbol = "$"},
+                new Currency {Name = "Russian ruble", Symbol = "₽"}
             };
             context.Currencies.AddRange(currencies);
             context.SaveChanges();

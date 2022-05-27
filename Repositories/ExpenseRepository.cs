@@ -36,10 +36,23 @@ namespace ExpenseApi.Repositories
             return expenses;
         }
 
-        public override void Remove(Expense expense)
+        public async override Task Remove(Expense expense)
         {
-            _context.Amounts.Remove(expense.Amount);
-            base.Remove(expense);
+            try
+            {
+                if (expense.Amount != null)
+                {
+                    _context.Entry(expense.Amount).State = EntityState.Deleted;
+                    _context.Amounts.Remove(expense.Amount);
+                    await _context.SaveChangesAsync();
+                }
+                await base.Remove(expense);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+
         }
     }
 }

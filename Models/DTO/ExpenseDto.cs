@@ -6,6 +6,8 @@ namespace ExpenseApi.Models.DTO
 {
     public class ExpenseDto
     {
+        public int Id { get; set; }
+
         public string? UserName { get; set; }
 
         public int UserId { get; set; }
@@ -17,7 +19,7 @@ namespace ExpenseApi.Models.DTO
 
         public string? AmountDisplay { get; set; }
 
-        public AmountDtoIn Amount { get; set; }
+        public AmountDto Amount { get; set; }
 
         public string Comment { get; set; }
     }

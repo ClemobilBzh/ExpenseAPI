@@ -40,17 +40,33 @@ namespace ExpenseApi.Repositories
 
         public async virtual Task<T> GetById(int id)
         {
-            return await _context.Set<T>().FindAsync(id);
+            try
+            {
+                return await _context.Set<T>().FindAsync(id);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
+
         }
 
-        public virtual void Remove(T entity)
+        public virtual async Task Remove(T entity)
         {
+            _context.Entry(entity).State = EntityState.Deleted;
             _context.Set<T>().Remove(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public void RemoveRange(IEnumerable<T> entities)
+        public async Task RemoveRange(IEnumerable<T> entities)
         {
             _context.Set<T>().RemoveRange(entities);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<int> Update(T entity)
@@ -61,7 +77,7 @@ namespace ExpenseApi.Repositories
             {
                 return await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException ex)
+            catch (DbUpdateConcurrencyException)
             {
                 if (!EntityExists(entity))
                 {

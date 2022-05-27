@@ -11,5 +11,7 @@ namespace ExpenseApi.Models.DTO
         public string LastName { get; set; }
 
         public int CurrencyId { get; set; }
+
+        public string? CurrencyInfos { get; set; }
     }
 }

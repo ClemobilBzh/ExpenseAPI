@@ -14,8 +14,12 @@ namespace ExpenseApi.Models.DTO
 
             CreateMap<ExpenseDto, Expense>();
 
-            CreateMap<AmountDtoIn, AmountDetails>();
+            CreateMap<AmountDto, AmountDetails>();
+            CreateMap<AmountDetails, AmountDto>();
+
             CreateMap<UserDto, User>();
+            CreateMap<User, UserDto>()
+                .ForMember(u => u.CurrencyInfos, opt => opt.MapFrom(u => u.Currency.GetCurrencyInfos()));
         }
     }
 }
