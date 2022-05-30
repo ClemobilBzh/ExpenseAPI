@@ -10,8 +10,6 @@ namespace ExpenseApi.Repositories
         Task<IEnumerable<T>> Find(Expression<Func<T, bool>> expression);
         Task<T> Add(T entity);
         Task<IEnumerable<T>> AddRange(IEnumerable<T> entities);
-        Task Remove(T entity);
-        Task RemoveRange(IEnumerable<T> entities);
         Task<int> Update(T entity);
     }
 }

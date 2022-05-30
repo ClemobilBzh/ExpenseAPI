@@ -83,26 +83,5 @@ namespace ExpenseApi.Controllers
 
             return CreatedAtAction(nameof(GetUser), new { id = user.Id }, _mapper.Map<UserDto>(user));
         }
-
-        // DELETE: api/Users/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
-        {
-            User user = await _userRepository.GetById(id);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            if (user.Expenses.Any())
-            {
-                return BadRequest("User with Expenses cannot be removed");
-            }
-
-            _userRepository.Remove(user);
-
-            return NoContent();
-        }
     }
 }

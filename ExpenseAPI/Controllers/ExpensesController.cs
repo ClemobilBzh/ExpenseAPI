@@ -90,21 +90,5 @@ namespace ExpenseApi.Controllers
                 return CreatedAtAction(nameof(GetExpense), new { id = expense.Id }, _mapper.Map<ExpenseDto>(expense));
             }
         }
-
-        // DELETE: api/Expenses/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteExpense(int id)
-        {
-            Expense expense = await _expenseRepository.GetById(id);
-
-            if (expense == null)
-            {
-                return NotFound();
-            }
-
-            _expenseRepository.Remove(expense);
-
-            return NoContent();
-        }
     }
 }

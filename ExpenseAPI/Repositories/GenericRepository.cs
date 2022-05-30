@@ -58,19 +58,6 @@ namespace ExpenseApi.Repositories
 
         }
 
-        public virtual async Task Remove(T entity)
-        {
-            _context.Entry(entity).State = EntityState.Deleted;
-            _context.Set<T>().Remove(entity);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task RemoveRange(IEnumerable<T> entities)
-        {
-            _context.Set<T>().RemoveRange(entities);
-            await _context.SaveChangesAsync();
-        }
-
         public async Task<int> Update(T entity)
         {
             _context.Entry(entity).State = EntityState.Modified;
