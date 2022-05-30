@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/ExpenseAPI/ExpenseApi.csproj",
+                "${workspaceFolder}/ExpenseApi/ExpenseApi.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/ExpenseAPI/ExpenseApi.csproj",
+                "${workspaceFolder}/ExpenseApi/ExpenseApi.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -33,7 +33,7 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/ExpenseAPI/ExpenseApi.csproj"
+                "${workspaceFolder}/ExpenseApi/ExpenseApi.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

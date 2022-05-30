@@ -1,14 +1,17 @@
-using Xunit;
-using ExpenseApi.Controllers;
-using AutoMapper;
-using ExpenseApi.Repositories;
-using ExpenseApi.Models.DTO;
-using System;
-using Microsoft.AspNetCore.Mvc;
-using Moq;
 using System.Threading.Tasks;
+
+using Microsoft.AspNetCore.Mvc;
+
+using AutoMapper;
+
+using ExpenseApi.Controllers;
 using ExpenseApi.Models;
-using System.Net;
+using ExpenseApi.Models.DTO;
+using ExpenseApi.Repositories;
+
+using Moq;
+
+using Xunit;
 
 namespace ExpenseAPI.Tests.Controllers
 {
@@ -41,13 +44,43 @@ namespace ExpenseAPI.Tests.Controllers
         [Fact]
         public async void PostExpense_DateInFuture_ReturnsBadRequest()
         {
-            // ExpenseDto expenseDto = new()
-            // { Date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day + 1) };
+            ExpenseDto expenseDto = new();
 
-            // var response = await _expensesController.PostExpense(expenseDto);
+            Expense expenseReturn = new Expense() { Id = 1 };
 
-            // var badRequestResult = Assert.IsType<ActionResult<Expense>>(response);
-            // Assert.IsType<SerializableError>(badRequestResult.Value);
+            _expensesController.ModelState.AddModelError("Date", "Date cannot be in the future");
+
+            _expenseRepository.Setup(e => e.Add(It.IsAny<Expense>()))
+                            .Returns(Task.FromResult(expenseReturn));
+
+            var response = await _expensesController.PostExpense(expenseDto);
+
+            ActionResult<Expense> badRequestResult = Assert.IsType<ActionResult<Expense>>(response);
+            var result = Assert.IsType<BadRequestObjectResult>(badRequestResult.Result as BadRequestObjectResult);
+            var errors = Assert.IsType<SerializableError>(result.Value as SerializableError);
+            Assert.Single(errors);
+            Assert.True(errors.ContainsKey("Date"));
+        }
+
+        [Fact]
+        public async void PostExpense_ReturnsOk()
+        {
+            ExpenseDto expenseDto = new()
+            {
+                Amount = new AmountDto()
+            };
+
+            Expense expenseReturn = new Expense() { Id = 1 };
+
+            _expenseRepository.Setup(e => e.Add(It.IsAny<Expense>()))
+                            .Returns(Task.FromResult(expenseReturn));
+
+            var response = await _expensesController.PostExpense(expenseDto);
+
+            ActionResult<Expense> okRequestResult = Assert.IsType<ActionResult<Expense>>(response);
+            var result = Assert.IsType<CreatedAtActionResult>(okRequestResult.Result as CreatedAtActionResult);
+            var content = Assert.IsType<ExpenseDto>(result.Value);
+            Assert.Equal(1, content.Id);
         }
     }
 }

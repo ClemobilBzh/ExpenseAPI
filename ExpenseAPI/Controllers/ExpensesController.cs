@@ -74,14 +74,21 @@ namespace ExpenseApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Expense>> PostExpense(ExpenseDto expenseDto)
         {
-            Expense expense = _mapper.Map<Expense>(expenseDto);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            else
+            {
+                Expense expense = _mapper.Map<Expense>(expenseDto);
 
-            expense.User = await _userRepository.GetById(expenseDto.UserId);
-            expense.Amount.Currency = await _currencyRepository.GetById(expenseDto.Amount.CurrencyId);
+                expense.User = await _userRepository.GetById(expenseDto.UserId);
+                expense.Amount.Currency = await _currencyRepository.GetById(expenseDto.Amount.CurrencyId);
 
-            expense = await _expenseRepository.Add(expense);
+                expense = await _expenseRepository.Add(expense);
 
-            return CreatedAtAction(nameof(GetExpense), new { id = expense.Id }, _mapper.Map<ExpenseDto>(expense));
+                return CreatedAtAction(nameof(GetExpense), new { id = expense.Id }, _mapper.Map<ExpenseDto>(expense));
+            }
         }
 
         // DELETE: api/Expenses/5

@@ -6,12 +6,12 @@ namespace ExpenseApi.Models.Enum
     public enum ExpenseNature
     {
         [EnumMember(Value = "Restaurant")]
-        Restaurant,
+        Restaurant = 1,
         [EnumMember(Value = "Hotel")]
-        Hotel,
+        Hotel = 2,
         [EnumMember(Value = "Transport")]
-        Transport,
+        Transport = 3,
         [EnumMember(Value = "Misc")]
-        Misc
+        Misc = 4
     }
 }

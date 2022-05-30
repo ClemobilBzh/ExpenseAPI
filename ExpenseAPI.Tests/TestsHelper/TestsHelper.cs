@@ -6,7 +6,7 @@ namespace ExpenseAPI.Tests.TestsHelper
 {
     public static class TestsHelper
     {
-        public static IList<ValidationResult> ValidateModel(object model)
+        public static List<ValidationResult> ValidateModel(object model)
         {
             var validationResults = new List<ValidationResult>();
             var ctx = new ValidationContext(model, null, null);
