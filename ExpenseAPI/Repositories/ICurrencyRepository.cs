@@ -1,9 +1,10 @@
 using System;
+
 using ExpenseApi.Models;
 
 namespace ExpenseApi.Repositories
 {
-    public interface IUserRepository : IGenericRepository<User>
+    public interface ICurrencyRepository : IGenericRepository<Currency>
     {
     }
 }

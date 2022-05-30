@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
+
+using AutoMapper;
+
 using ExpenseApi.Models;
 using ExpenseApi.Models.DTO;
-using AutoMapper;
 using ExpenseApi.Repositories;
 
 namespace ExpenseApi.Controllers
@@ -73,6 +75,7 @@ namespace ExpenseApi.Controllers
         public async Task<ActionResult<Expense>> PostExpense(ExpenseDto expenseDto)
         {
             Expense expense = _mapper.Map<Expense>(expenseDto);
+
             expense.User = await _userRepository.GetById(expenseDto.UserId);
             expense.Amount.Currency = await _currencyRepository.GetById(expenseDto.Amount.CurrencyId);
 

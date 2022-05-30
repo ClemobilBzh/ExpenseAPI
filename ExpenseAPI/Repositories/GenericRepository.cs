@@ -1,7 +1,9 @@
 using System;
 using System.Linq.Expressions;
-using ExpenseApi.Data;
+
 using Microsoft.EntityFrameworkCore;
+
+using ExpenseApi.Data;
 
 namespace ExpenseApi.Repositories
 {

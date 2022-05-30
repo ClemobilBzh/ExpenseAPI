@@ -1,5 +1,6 @@
-using ExpenseApi.Models;
 using Microsoft.EntityFrameworkCore;
+
+using ExpenseApi.Models;
 
 namespace ExpenseApi.Data
 {

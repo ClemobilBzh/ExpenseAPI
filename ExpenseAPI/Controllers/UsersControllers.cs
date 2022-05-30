@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
+
+using AutoMapper;
+
 using ExpenseApi.Models;
 using ExpenseApi.Models.DTO;
-using AutoMapper;
 using ExpenseApi.Repositories;
 
 namespace ExpenseApi.Controllers

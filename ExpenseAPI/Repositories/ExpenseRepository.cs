@@ -1,7 +1,9 @@
 using System;
+
+using Microsoft.EntityFrameworkCore;
+
 using ExpenseApi.Data;
 using ExpenseApi.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace ExpenseApi.Repositories
 {
