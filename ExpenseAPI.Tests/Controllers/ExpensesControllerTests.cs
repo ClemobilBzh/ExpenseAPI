@@ -9,6 +9,8 @@ using ExpenseApi.Models;
 using ExpenseApi.Models.DTO;
 using ExpenseApi.Repositories;
 
+using static ExpenseAPI.Tests.TestsHelper.TestsHelper;
+
 using Moq;
 
 using Xunit;
@@ -71,9 +73,15 @@ namespace ExpenseAPI.Tests.Controllers
             };
 
             Expense expenseReturn = new Expense() { Id = 1 };
+            User userReturn = new User();
 
-            _expenseRepository.Setup(e => e.Add(It.IsAny<Expense>()))
+            _expenseRepository.Setup(er => er.Add(It.IsAny<Expense>()))
                             .Returns(Task.FromResult(expenseReturn));
+
+            _userRepository.Setup(ur => ur.GetById(It.IsAny<int>()))
+                            .Returns(Task.FromResult(userReturn));
+
+            _expensesController.ObjectValidator = GetObjectValidator().Object;
 
             var response = await _expensesController.PostExpense(expenseDto);
 

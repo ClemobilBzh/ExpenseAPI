@@ -26,9 +26,11 @@ namespace ExpenseAPI.Tests.Models.DTO
 
             List<ValidationResult> validationResults = ValidateModel(expenseDto);
 
+            Assert.Contains(validationResults,
+                v => v.ErrorMessage == "Date cannot be in the future."
+            );
             Assert.True(validationResults.Any(
                 v => v.MemberNames.Contains("Date")
-             && v.ErrorMessage!.Contains("Date cannot be in the future.")
             ));
         }
 
@@ -47,9 +49,11 @@ namespace ExpenseAPI.Tests.Models.DTO
 
             List<ValidationResult> validationResults = ValidateModel(expenseDto);
 
+            Assert.Contains(validationResults,
+                v => v.ErrorMessage == "Date cannot be older than 3 months."
+            );
             Assert.True(validationResults.Any(
                 v => v.MemberNames.Contains("Date")
-             && v.ErrorMessage!.Contains("Date cannot be older than 3 months.")
             ));
         }
 
@@ -60,9 +64,11 @@ namespace ExpenseAPI.Tests.Models.DTO
 
             List<ValidationResult> validationResults = ValidateModel(expenseDto);
 
+            Assert.Contains(validationResults,
+                            v => v.ErrorMessage == "The Comment field is required."
+                        );
             Assert.True(validationResults.Any(
                 v => v.MemberNames.Contains("Comment")
-             && v.ErrorMessage!.Contains("The Comment field is required.")
             ));
         }
 
@@ -73,9 +79,11 @@ namespace ExpenseAPI.Tests.Models.DTO
 
             List<ValidationResult> validationResults = ValidateModel(expenseDto);
 
+            Assert.Contains(validationResults,
+                            v => v.ErrorMessage == "Nature must be informed"
+                        );
             Assert.True(validationResults.Any(
                 v => v.MemberNames.Contains("Nature")
-             && v.ErrorMessage!.Contains("Nature must be informed")
             ));
         }
 
@@ -86,9 +94,11 @@ namespace ExpenseAPI.Tests.Models.DTO
 
             List<ValidationResult> validationResults = ValidateModel(expenseDto);
 
+            Assert.Contains(validationResults,
+                v => v.ErrorMessage == "UserId must be informed"
+            );
             Assert.True(validationResults.Any(
                 v => v.MemberNames.Contains("UserId")
-             && v.ErrorMessage!.Contains("UserId must be informed")
             ));
         }
 

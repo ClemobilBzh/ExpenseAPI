@@ -50,10 +50,7 @@ namespace ExpenseApi.Models.DTO
             {
                 return true;
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         private bool DateisNotinFuture()
@@ -62,10 +59,7 @@ namespace ExpenseApi.Models.DTO
             {
                 return false;
             }
-            else
-            {
-                return true;
-            }
+            return true;
         }
     }
 }

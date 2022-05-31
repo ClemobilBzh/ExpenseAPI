@@ -20,6 +20,7 @@ namespace ExpenseApi.Repositories
                     .Where(u => u.Id == id)
                     .Include(u => u.Currency)
                     .Include(u => u.Expenses)
+                    .ThenInclude(e => e.AmountDetails)
                     .SingleOrDefaultAsync();
         }
 

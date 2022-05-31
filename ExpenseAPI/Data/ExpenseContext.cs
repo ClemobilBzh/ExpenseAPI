@@ -20,7 +20,7 @@ namespace ExpenseApi.Data
         {
             modelBuilder.Entity<AmountDetails>()
                 .HasOne(a => a.Expense)
-                .WithOne(e => e.Amount)
+                .WithOne(e => e.AmountDetails)
                 .OnDelete(DeleteBehavior.NoAction)
             ;
         }

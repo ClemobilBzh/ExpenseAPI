@@ -9,10 +9,8 @@ namespace ExpenseApi.Repositories
 {
     public class ExpenseRepository : GenericRepository<Expense>, IExpenseRepository
     {
-        protected readonly ExpenseContext _context;
         public ExpenseRepository(ExpenseContext context) : base(context)
         {
-            _context = context;
         }
 
         public override async Task<Expense> GetById(int id)
@@ -20,7 +18,7 @@ namespace ExpenseApi.Repositories
             Expense expense = await _context.Expenses
                                 .Where(e => e.Id == id)
                                 .Include(e => e.User)
-                                .Include(e => e.Amount)
+                                .Include(e => e.AmountDetails)
                                 .ThenInclude(a => a.Currency)
                                 .SingleOrDefaultAsync();
 
@@ -31,7 +29,7 @@ namespace ExpenseApi.Repositories
         {
             IEnumerable<Expense> expenses = await _context.Expenses
                                 .Include(e => e.User)
-                                .Include(e => e.Amount)
+                                .Include(e => e.AmountDetails)
                                 .ThenInclude(a => a.Currency)
                                 .ToListAsync();
 

@@ -10,10 +10,11 @@ namespace ExpenseApi.Models.DTO
         {
             CreateMap<Expense, ExpenseDto>()
                 .ForMember(eo => eo.UserName, opt => opt.MapFrom(e => e.User.GetName()))
-                .ForMember(eo => eo.AmountDisplay, opt => opt.MapFrom(e => e.Amount.GetAmoutInfo()))
+                .ForMember(eo => eo.AmountDisplay, opt => opt.MapFrom(e => e.AmountDetails.GetAmoutInfo()))
                 .ForMember(eo => eo.Amount, opt => opt.Ignore());
 
-            CreateMap<ExpenseDto, Expense>();
+            CreateMap<ExpenseDto, Expense>()
+                .ForMember(e => e.AmountDetails, opt => opt.MapFrom(e => e.Amount));
 
             CreateMap<AmountDto, AmountDetails>();
             CreateMap<AmountDetails, AmountDto>();
