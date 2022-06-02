@@ -76,12 +76,19 @@ namespace ExpenseApi.Controllers
         [HttpPost]
         public async Task<ActionResult<UserDto>> PostUser(UserDto userDto)
         {
-            User user = _mapper.Map<User>(userDto);
-            user.Currency = await _currencyRepository.GetById(userDto.CurrencyId);
+            if (ModelState.IsValid)
+            {
+                User user = _mapper.Map<User>(userDto);
+                user.Currency = await _currencyRepository.GetById(userDto.CurrencyId);
 
-            user = await _userRepository.Add(user);
+                if (TryValidateModel(user))
+                {
+                    user = await _userRepository.Add(user);
 
-            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, _mapper.Map<UserDto>(user));
+                    return CreatedAtAction(nameof(GetUser), new { id = user.Id }, _mapper.Map<UserDto>(user));
+                }
+            }
+            return BadRequest(ModelState);
         }
     }
 }

@@ -27,16 +27,36 @@ namespace ExpenseApi.Controllers
 
         // GET: api/Expenses
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ExpenseDto>>> GetExpenses()
+        public async Task<ActionResult<IEnumerable<ExpenseDto>>> GetExpensesNoSort()
         {
-            var expenses = await _expenseRepository.GetAll();
-            if (expenses == null || expenses.Count() == 0)
-            {
-                return NotFound();
-            }
+            return await GetExpenses(null);
+        }
+        // GET: api/Expenses/sortByDate/asc
+        [HttpGet("sortByDate/{sortByDate}")]
+        public async Task<ActionResult<IEnumerable<ExpenseDto>>> GetExpensesSortbyDate(string? sortByDate)
+        {
+            return await GetExpenses(sortByDate);
+        }
 
-            var expensesDto = _mapper.Map<IEnumerable<ExpenseDto>>(expenses);
-            return Ok(expensesDto);
+        // GET: api/Expenses/User/2
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<IEnumerable<ExpenseDto>>> GetExpensesByUserDefault(int userId)
+        {
+            return await GetExpensesByUser(userId, null, null);
+        }
+
+        // GET: api/Expenses/User/2/sortByDate/asc
+        [HttpGet("user/{userId}/sortByDate/{sortByDate}")]
+        public async Task<ActionResult<IEnumerable<ExpenseDto>>> GetExpensesByUserSortByDate(int userId, string sortByDate)
+        {
+            return await GetExpensesByUser(userId, sortByDate, null);
+        }
+
+        // GET: api/Expenses/User/2/sortByAmount/desc
+        [HttpGet("user/{userId}/sortByAmount/{sortByAmount}")]
+        public async Task<ActionResult<IEnumerable<ExpenseDto>>> GetExpensesByUserSortByAmount(int userId, string sortByAmount = " ")
+        {
+            return await GetExpensesByUser(userId, null, sortByAmount);
         }
 
         // GET: api/Expenses/5
@@ -56,7 +76,7 @@ namespace ExpenseApi.Controllers
         // PUT: api/Expenses/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutExpense(int id, ExpenseDto expenseDto)
+        public async Task<IActionResult> PutExpense(ExpenseDto expenseDto)
         {
             Expense expense = _mapper.Map<Expense>(expenseDto);
             int repoReturn = await _expenseRepository.Update(expense);
@@ -89,6 +109,35 @@ namespace ExpenseApi.Controllers
                 }
             }
             return BadRequest(ModelState);
+        }
+
+        // Plusieurs chemins mènent à cette fonction pour qu'ils soient utilisables par le swagger.
+        // Si on utilise une seule fonction publique avec plusieurs routes et des paramètres optionnels, Swagger els considère tous comme obligatoires
+        private async Task<ActionResult<IEnumerable<ExpenseDto>>> GetExpensesByUser(int userId, string? sortByDate, string? sortByAmount)
+        {
+            var expenses = await _expenseRepository.GetByUser(userId, sortByDate, sortByAmount);
+            if (expenses == null || expenses.Count() == 0)
+            {
+                return NotFound();
+            }
+
+            var expensesDto = _mapper.Map<IEnumerable<ExpenseDto>>(expenses);
+            return Ok(expensesDto);
+        }
+
+        private async Task<ActionResult<IEnumerable<ExpenseDto>>> GetExpenses(string? sortByDate)
+        {
+            IEnumerable<Expense> expenses;
+
+            expenses = await _expenseRepository.GetAllSort(sortByDate);
+
+            if (expenses == null || expenses.Count() == 0)
+            {
+                return NotFound();
+            }
+
+            var expensesDto = _mapper.Map<IEnumerable<ExpenseDto>>(expenses);
+            return Ok(expensesDto);
         }
     }
 }

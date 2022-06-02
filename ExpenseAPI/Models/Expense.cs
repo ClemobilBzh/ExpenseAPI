@@ -23,7 +23,7 @@ namespace ExpenseApi.Models
         {
             var results = new List<ValidationResult>();
 
-            if (!CurrencyIsInconsistent())
+            if (!CurrencyIsConsistent())
             {
                 results.Add(new ValidationResult("Expense currency is inconsistent with user currency.", new[] { nameof(Models.AmountDetails) }));
             }
@@ -46,7 +46,7 @@ namespace ExpenseApi.Models
             return false;
         }
 
-        private bool CurrencyIsInconsistent()
+        private bool CurrencyIsConsistent()
         {
             if (AmountDetails.Currency.Id == User.Currency.Id)
             {
