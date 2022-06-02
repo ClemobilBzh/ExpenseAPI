@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 
 using AutoMapper;
 
-using ExpenseApi.Controllers;
-using ExpenseApi.Models;
-using ExpenseApi.Models.DTO;
-using ExpenseApi.Repositories;
-
+using static ExpenseAPI.Constants.ErrorMessage;
+using ExpenseAPI.Controllers;
+using ExpenseAPI.Models;
+using ExpenseAPI.Models.DTO;
+using ExpenseAPI.Repositories;
 using static ExpenseAPI.Tests.TestsHelper.TestsHelper;
 
 using Moq;
@@ -50,7 +50,7 @@ namespace ExpenseAPI.Tests.Controllers
 
             Expense expenseReturn = new Expense() { Id = 1 };
 
-            _expensesController.ModelState.AddModelError("Date", "Date cannot be in the future");
+            _expensesController.ModelState.AddModelError(nameof(ExpenseDto.Date), DATE_IN_FUTURE);
 
             _expenseRepository.Setup(e => e.Add(It.IsAny<Expense>()))
                             .Returns(Task.FromResult(expenseReturn));
@@ -61,7 +61,7 @@ namespace ExpenseAPI.Tests.Controllers
             var result = Assert.IsType<BadRequestObjectResult>(badRequestResult.Result as BadRequestObjectResult);
             var errors = Assert.IsType<SerializableError>(result.Value as SerializableError);
             Assert.Single(errors);
-            Assert.True(errors.ContainsKey("Date"));
+            Assert.True(errors.ContainsKey(nameof(ExpenseDto.Date)));
         }
 
         [Fact]

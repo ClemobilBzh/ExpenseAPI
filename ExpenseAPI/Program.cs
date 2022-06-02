@@ -3,8 +3,8 @@ using System.Text.Json.Serialization;
 
 using Microsoft.EntityFrameworkCore;
 
-using ExpenseApi.Data;
-using ExpenseApi.Repositories;
+using ExpenseAPI.Data;
+using ExpenseAPI.Repositories;
 
 internal class Program
 {

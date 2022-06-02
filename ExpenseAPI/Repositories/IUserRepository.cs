@@ -1,8 +1,8 @@
 using System;
 
-using ExpenseApi.Models;
+using ExpenseAPI.Models;
 
-namespace ExpenseApi.Repositories
+namespace ExpenseAPI.Repositories
 {
     public interface IUserRepository : IGenericRepository<User>
     {

@@ -1,7 +1,7 @@
 using System;
 using System.Linq.Expressions;
 
-namespace ExpenseApi.Repositories
+namespace ExpenseAPI.Repositories
 {
     public interface IGenericRepository<T> where T : class
     {

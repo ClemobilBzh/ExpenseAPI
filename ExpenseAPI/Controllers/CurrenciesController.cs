@@ -1,7 +1,7 @@
 using System;
 using AutoMapper;
-using ExpenseApi.Models;
-using ExpenseApi.Repositories;
+using ExpenseAPI.Models;
+using ExpenseAPI.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExpenseAPI.Controllers

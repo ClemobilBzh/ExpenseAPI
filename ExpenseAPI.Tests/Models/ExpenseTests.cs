@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
-using ExpenseApi.Models;
+using ExpenseAPI.Models;
 
 using static ExpenseAPI.Tests.TestsHelper.TestsHelper;
 

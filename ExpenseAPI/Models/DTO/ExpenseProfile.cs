@@ -2,8 +2,9 @@ using System;
 
 using AutoMapper;
 
-namespace ExpenseApi.Models.DTO
+namespace ExpenseAPI.Models.DTO
 {
+    //paramètrage du mapper
     public class ExpenseProfile : Profile
     {
         public ExpenseProfile()

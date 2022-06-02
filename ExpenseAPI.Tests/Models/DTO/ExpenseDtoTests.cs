@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
-using ExpenseApi.Models.DTO;
+using static ExpenseAPI.Constants.ErrorMessage;
+using static ExpenseAPI.Constants.ValidationRules;
+using ExpenseAPI.Models.DTO;
 
 using static ExpenseAPI.Tests.TestsHelper.TestsHelper;
 
@@ -20,17 +22,17 @@ namespace ExpenseAPI.Tests.Models.DTO
             {
                 Date = DateTime.Today.AddDays(1),
                 Comment = "minimum comment",
-                Nature = ExpenseApi.Models.Enum.ExpenseNature.Restaurant,
+                Nature = ExpenseAPI.Models.Enum.ExpenseNature.Restaurant,
                 UserId = 1
             };
 
             List<ValidationResult> validationResults = ValidateModel(expenseDto);
 
             Assert.Contains(validationResults,
-                v => v.ErrorMessage == "Date cannot be in the future."
+                v => v.ErrorMessage == DATE_IN_FUTURE
             );
             Assert.True(validationResults.Any(
-                v => v.MemberNames.Contains("Date")
+                v => v.MemberNames.Contains(nameof(ExpenseDto.Date))
             ));
         }
 
@@ -40,20 +42,20 @@ namespace ExpenseAPI.Tests.Models.DTO
             ExpenseDto expenseDto = new ExpenseDto()
             {
                 Date = DateTime.Today
-                        .AddMonths(-3)
+                        .AddMonths(-MAX_RETURN_IN_PAST_IN_MONTHS)
                         .AddDays(-1),
                 Comment = "minimum comment",
-                Nature = ExpenseApi.Models.Enum.ExpenseNature.Restaurant,
+                Nature = ExpenseAPI.Models.Enum.ExpenseNature.Restaurant,
                 UserId = 1
             };
 
             List<ValidationResult> validationResults = ValidateModel(expenseDto);
 
             Assert.Contains(validationResults,
-                v => v.ErrorMessage == "Date cannot be older than 3 months."
+                v => v.ErrorMessage == String.Format(DATE_TOO_OLD, MAX_RETURN_IN_PAST_IN_MONTHS)
             );
             Assert.True(validationResults.Any(
-                v => v.MemberNames.Contains("Date")
+                v => v.MemberNames.Contains(nameof(ExpenseDto.Date))
             ));
         }
 
@@ -68,7 +70,7 @@ namespace ExpenseAPI.Tests.Models.DTO
                             v => v.ErrorMessage == "The Comment field is required."
                         );
             Assert.True(validationResults.Any(
-                v => v.MemberNames.Contains("Comment")
+                v => v.MemberNames.Contains(nameof(expenseDto.Comment))
             ));
         }
 
@@ -80,10 +82,10 @@ namespace ExpenseAPI.Tests.Models.DTO
             List<ValidationResult> validationResults = ValidateModel(expenseDto);
 
             Assert.Contains(validationResults,
-                            v => v.ErrorMessage == "Nature must be informed"
+                            v => v.ErrorMessage == NATURE_ID_REQUIRED
                         );
             Assert.True(validationResults.Any(
-                v => v.MemberNames.Contains("Nature")
+                v => v.MemberNames.Contains(nameof(expenseDto.Nature))
             ));
         }
 
@@ -95,10 +97,10 @@ namespace ExpenseAPI.Tests.Models.DTO
             List<ValidationResult> validationResults = ValidateModel(expenseDto);
 
             Assert.Contains(validationResults,
-                v => v.ErrorMessage == "UserId must be informed"
+                v => v.ErrorMessage == USER_ID_REQUIRED
             );
             Assert.True(validationResults.Any(
-                v => v.MemberNames.Contains("UserId")
+                v => v.MemberNames.Contains(nameof(expenseDto.UserId))
             ));
         }
 
@@ -109,7 +111,7 @@ namespace ExpenseAPI.Tests.Models.DTO
             {
                 Date = DateTime.Today.AddDays(-1),
                 Comment = "minimum comment",
-                Nature = ExpenseApi.Models.Enum.ExpenseNature.Restaurant,
+                Nature = ExpenseAPI.Models.Enum.ExpenseNature.Restaurant,
                 UserId = 1
             };
 

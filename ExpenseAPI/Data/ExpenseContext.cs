@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 
-using ExpenseApi.Models;
+using ExpenseAPI.Models;
 
-namespace ExpenseApi.Data
+namespace ExpenseAPI.Data
 {
     public class ExpenseContext : DbContext
     {

@@ -1,7 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 using System;
 
-namespace ExpenseApi.Models
+using static ExpenseAPI.Constants.ErrorMessage;
+
+namespace ExpenseAPI.Models
 {
     public class AmountDetails : IValidatableObject
     {
@@ -10,7 +12,8 @@ namespace ExpenseApi.Models
         [Required]
         public float Amount { get; set; }
 
-        [Required(ErrorMessage = "Currency must be registered before its use.")]
+        //Si cette propriété est null au moment de la validation, c'est que la devise Currency correspondant à l'Id n'a pas été trouvée
+        [Required(ErrorMessage = CURRENCY_NOT_REGISTERED)]
         public Currency Currency { get; set; }
         public int CurrencyId { get; set; }
         public Expense? Expense { get; set; }

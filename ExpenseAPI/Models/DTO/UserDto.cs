@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace ExpenseApi.Models.DTO
+namespace ExpenseAPI.Models.DTO
 {
     public class UserDto
     {

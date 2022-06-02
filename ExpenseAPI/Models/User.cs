@@ -2,7 +2,9 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace ExpenseApi.Models
+using static ExpenseAPI.Constants.ErrorMessage;
+
+namespace ExpenseAPI.Models
 {
     public class User
     {
@@ -12,7 +14,8 @@ namespace ExpenseApi.Models
 
         public string FirstName { get; set; }
 
-        [Required(ErrorMessage = "Currency must be registered before its use.")]
+        //Si cette propriété est null au moment de la validation, c'est que le user correspondant à l'Id n'a pas été trouvé
+        [Required(ErrorMessage = CURRENCY_NOT_REGISTERED)]
         public Currency Currency { get; set; }
 
         public int CurrencyId { get; set; }

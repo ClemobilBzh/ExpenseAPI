@@ -3,9 +3,9 @@ using System.Linq.Expressions;
 
 using Microsoft.EntityFrameworkCore;
 
-using ExpenseApi.Data;
+using ExpenseAPI.Data;
 
-namespace ExpenseApi.Repositories
+namespace ExpenseAPI.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {

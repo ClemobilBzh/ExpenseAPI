@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "ExpenseApi": {
+    "ExpenseAPI": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

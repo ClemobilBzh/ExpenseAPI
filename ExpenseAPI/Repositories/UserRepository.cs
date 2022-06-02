@@ -2,10 +2,10 @@ using System;
 
 using Microsoft.EntityFrameworkCore;
 
-using ExpenseApi.Data;
-using ExpenseApi.Models;
+using ExpenseAPI.Data;
+using ExpenseAPI.Models;
 
-namespace ExpenseApi.Repositories
+namespace ExpenseAPI.Repositories
 {
     public class UserRepository : GenericRepository<User>, IUserRepository
     {

@@ -1,7 +1,7 @@
 using System;
-using ExpenseApi.Models;
+using ExpenseAPI.Models;
 
-namespace ExpenseApi.Repositories
+namespace ExpenseAPI.Repositories
 {
     public interface IExpenseRepository : IGenericRepository<Expense>
     {

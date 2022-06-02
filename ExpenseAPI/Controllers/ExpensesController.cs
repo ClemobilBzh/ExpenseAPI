@@ -2,11 +2,11 @@ using Microsoft.AspNetCore.Mvc;
 
 using AutoMapper;
 
-using ExpenseApi.Models;
-using ExpenseApi.Models.DTO;
-using ExpenseApi.Repositories;
+using ExpenseAPI.Models;
+using ExpenseAPI.Models.DTO;
+using ExpenseAPI.Repositories;
 
-namespace ExpenseApi.Controllers
+namespace ExpenseAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

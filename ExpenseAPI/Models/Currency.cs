@@ -1,11 +1,16 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
-namespace ExpenseApi.Models
+namespace ExpenseAPI.Models
 {
     public class Currency
     {
         public int Id { get; set; }
+
+        [Required]
         public string Name { get; set; }
+
+        [Required]
         public string Symbol { get; set; }
 
         public string GetCurrencyInfos()

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
-using ExpenseApi.Models.DTO;
+using static ExpenseAPI.Constants.ErrorMessage;
+using ExpenseAPI.Models.DTO;
 
 using static ExpenseAPI.Tests.TestsHelper.TestsHelper;
 
@@ -21,9 +22,9 @@ namespace ExpenseAPI.Tests.Models.DTO
             List<ValidationResult> validationResults = ValidateModel(amountDto);
 
             Assert.True(validationResults.Any(
-                v => (v.MemberNames.Contains("CurrencyId")
-                && v.ErrorMessage!.Contains("CurrencyId must be informed"))
-                || (v.MemberNames.Contains("Amount")
+                v => (v.MemberNames.Contains(nameof(AmountDto.CurrencyId))
+                && v.ErrorMessage!.Contains(CURRENCY_REQUIRED))
+                || (v.MemberNames.Contains(nameof(AmountDto.Amount))
                  && v.ErrorMessage!.Contains("The field Amount must be between 0,01 and 1000000."))
             ));
         }

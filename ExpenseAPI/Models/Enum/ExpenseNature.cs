@@ -1,8 +1,10 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace ExpenseApi.Models.Enum
+namespace ExpenseAPI.Models.Enum
 {
+    /// Les types de dépenses ont été enregistrés ici en dur, 
+    /// mais il serait intéressant de le stocker en base de données pour qu'ils puissent être gérés par l'utilisateur
     public enum ExpenseNature
     {
         [EnumMember(Value = "Restaurant")]

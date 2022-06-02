@@ -1,8 +1,8 @@
 using System;
 
-using ExpenseApi.Models;
+using ExpenseAPI.Models;
 
-namespace ExpenseApi.Data
+namespace ExpenseAPI.Data
 {
     public static class DbInitializer
     {
